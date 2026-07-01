@@ -52,3 +52,19 @@ string DesiredWord(const vector<string>& words, const string& wanted) {
     }
     return NOT_FOUND;
 }
+
+int findDistance(const string &start_date, const string &end_date)
+{
+    int start_days = dateToDays(start_date);
+    int end_days = dateToDays(end_date);
+    return abs(start_days - end_days);
+}
+
+int dateToDays(const string &date)
+{
+    vector<string> date_parts = Separator(date, '/');
+    return stoi(date_parts[0]) * 360 +
+           stoi(date_parts[1]) * 30 +
+           stoi(date_parts[2]);
+}
+

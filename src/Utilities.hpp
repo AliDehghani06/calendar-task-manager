@@ -18,4 +18,5 @@ vector<string> Separator(const string &line, char separator, char enclosure = '"
 string RemoveQuotation(const string& word);
 string DesiredWord(const vector<string>& words, const string& wanted);
 int findDistance(const string &start_date, const string &end_date);
+int dateToDays(const string &date);
 #endif
