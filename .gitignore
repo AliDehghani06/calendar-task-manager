@@ -1,0 +1,77 @@
+# Object files
+*.o
+*.obj
+*.lo
+*.slo
+
+# Dependency files
+*.d
+
+# Static libraries
+*.a
+*.lib
+*.lai
+
+# Shared libraries
+*.so
+*.so.*
+*.dll
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dbg
+*.pdb
+
+build/
+bin/
+cmake-build-*/
+Debug/
+Release/
+
+CMakeFiles/
+CMakeCache.txt
+compile_commands.json
+cmake_install.cmake
+install_manifest.txt
+CTestTestfile.cmake
+
+Makefile.user
+
+# Visual Studio Code
+.vscode/
+
+# CLion
+.idea/
+
+# Qt Creator
+*.pro.user
+*.pro.user.*
+
+# Visual Studio
+.vs/
+
+.DS_Store
+Thumbs.db
+
+*.log
+
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+.cache/
+
+!test/**/*.out
+
+!csv/
+!csv/*.csv
