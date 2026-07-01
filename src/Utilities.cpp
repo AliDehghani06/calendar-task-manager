@@ -93,3 +93,47 @@ string nextDay(const string &date)
     return string(buffer);
 }
 
+bool checkWeekDays(const vector<string> &week_days)
+{
+    for (const auto &day : week_days)
+    {
+        if (day != SATURDAY && day != SUNDAY && day != MONDAY &&
+             day != TUESDAY && day != WEDNESDAY && day != THURSDAY && day != FRIDAY)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool validateDate(const string& date) {
+    regex date_pattern(
+        "^"
+        "(14[0-9]{2}|1[5-9][0-9]{2}|[2-9][0-9]{3})"
+        "/"
+        "(0[1-9]|1[0-2])"
+        "/"
+        "(0[1-9]|[12][0-9]|30)"
+        "$"
+    );
+    return regex_match(date, date_pattern);
+}
+
+bool isValidStartTime(const string& time) {
+    regex time_pattern("^([0-9]|0[0-9]|1[0-9]|2[0-3])$");
+    return regex_match(time, time_pattern);
+}
+
+bool isValidDuration(const string& dur) {
+    regex dur_pattern("^[1-9][0-9]*$");
+    return regex_match(dur, dur_pattern);
+}
+
+bool isValidDay(const string& day) {
+    regex day_pattern("^([1-9]|0[1-9]|[12][0-9]|30)$");
+    if (!regex_match(day, day_pattern)) {
+        return false;
+    }
+    int day_num = stoi(day);
+    return (day_num >= 1 && day_num <= 30);
+}

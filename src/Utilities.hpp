@@ -20,4 +20,10 @@ string DesiredWord(const vector<string>& words, const string& wanted);
 int findDistance(const string &start_date, const string &end_date);
 int dateToDays(const string &date);
 string nextDay(const string &date);
+bool checkWeekDays(const vector<string> &week_days);
+bool validateDate(const string& date);
+bool isValidStartTime(const string& time);
+bool isValidDuration(const string& dur);
+bool isValidDay(const string& day);
+
 #endif
