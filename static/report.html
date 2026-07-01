@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .logout-button-container {
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            z-index: 10;
+        }
+
+        .logout-button-container button i {
+            font-size: 2rem;
+        }
+
+        .report-item {
+            padding: 1rem;
+            background-color: #f3f4f6;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            margin-bottom: 1rem;
+            border-bottom-width: 2px;
+            border-color: #e5e7eb;
+            text-align: left;
+        }
+
+        #no-items-message {
+            display: none;
+        }
+
+        #backend-message {
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+        }
+
+        .message-success {
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 1px solid #34d399;
+        }
+
+        .message-error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+
+        .message-info {
+            background-color: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #60a5fa;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group input,
+        .input-group textarea,
+        .input-group select {
+            padding-left: 1rem;
+            padding-right: 2.5rem;
+        }
+
+        .input-group .icon {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        .required-label::after {
+            content: '*';
+            color: #ef4444;
+            margin-left: 0.25rem;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center p-4 relative">
+    <div class="logout-button-container">
+        <button type="button" onclick="navigateTo('/', true)"
+            class="bg-red-500 text-white font-bold rounded-full shadow-md hover:bg-red-600 transition duration-300 py-3 px-6 text-base whitespace-nowrap">
+            <i class="fas fa-sign-out-alt ml-2"></i> Logout
+        </button>
+    </div>
+
+    <section id="report-page" class="page-section active">
+        <div class="bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-2xl w-full max-w-2xl text-center">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">Your Reports</h2>
+
+            <div id="backend-message"></div>
+
+            <form id="report-filter-form" class="space-y-6 mb-8">
+                <h3 class="text-xl font-bold text-gray-700 mt-4 text-left">Filter Reports by Date</h3>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="input-group">
+                        <label for="start-year" class="block text-gray-700 mb-2 text-left required-label text-sm">Start
+                            Year (SH)</label>
+                        <select id="start-year" name="startYear"
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required></select>
+                    </div>
+                    <div class="input-group">
+                        <label for="start-month" class="block text-gray-700 mb-2 text-left required-label text-sm">Start
+                            Month (SH)</label>
+                        <select id="start-month" name="startMonth"
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required></select>
+                    </div>
+                    <div class="input-group">
+                        <label for="start-day" class="block text-gray-700 mb-2 text-left required-label text-sm">Start
+                            Day</label>
+                        <select id="start-day" name="startDay"
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required></select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="input-group">
+                        <label for="end-year" class="block text-gray-700 mb-2 text-left required-label text-sm">End Year
+                            (SH)</label>
+                        <select id="end-year" name="endYear"
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required></select>
+                    </div>
+                    <div class="input-group">
+                        <label for="end-month" class="block text-gray-700 mb-2 text-left required-label text-sm">End
+                            Month (SH)</label>
+                        <select id="end-month" name="endMonth"
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required></select>
+                    </div>
+                    <div class="input-group">
+                        <label for="end-day" class="block text-gray-700 mb-2 text-left required-label text-sm">End
+                            Day</label>
+                        <select id="end-day" name="endDay"
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required></select>
+                    </div>
+                </div>
+
+                <button type="submit"
+                    class="w-full font-bold text-white py-3 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 transition duration-300 shadow-lg">
+                    Generate Report
+                </button>
+            </form>
+
+            <div class="mb-6 h-96 overflow-y-auto border border-gray-300 rounded-lg p-4">
+                <ul id="report-list" class="space-y-3">
+                    <p id="no-items-message" class="text-gray-500 text-lg mt-4 text-center">No reports to display.</p>
+                </ul>
+            </div>
+
+            <div class="mt-6 text-center">
+                <button type="button" onclick="navigateTo('/dashboard')"
+                    class="mt-4 text-gray-500 hover:text-gray-800 transition">Back to Dashboard</button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const reportList = document.getElementById('report-list');
+        const noItemsMessage = document.getElementById('no-items-message');
+        const backendMessageElement = document.getElementById('backend-message');
+        const reportFilterForm = document.getElementById('report-filter-form');
+
+        const startYearSelect = document.getElementById('start-year');
+        const startMonthSelect = document.getElementById('start-month');
+        const startDaySelect = document.getElementById('start-day');
+        const endYearSelect = document.getElementById('end-year');
+        const endMonthSelect = document.getElementById('end-month');
+        const endDaySelect = document.getElementById('end-day');
+
+        function showMessage(message, type = 'info') {
+            backendMessageElement.textContent = message;
+            backendMessageElement.className = `message-${type}`;
+            backendMessageElement.style.display = 'block';
+
+            setTimeout(() => {
+                backendMessageElement.style.display = 'none';
+            }, 5000);
+        }
+
+        function populateYears(selectElementId) {
+            const selectElement = document.getElementById(selectElementId);
+            selectElement.innerHTML = '';
+
+            const emptyOption = document.createElement('option');
+            emptyOption.value = '';
+            emptyOption.textContent = 'Select Year';
+            selectElement.appendChild(emptyOption);
+
+            const currentSolarYear = 1404;
+            const endYear = currentSolarYear + 10;
+            for (let year = currentSolarYear; year <= endYear; year++) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                selectElement.appendChild(option);
+            }
+        }
+
+        function populateMonths(selectElementId) {
+            const selectElement = document.getElementById(selectElementId);
+            selectElement.innerHTML = '';
+
+            const emptyOption = document.createElement('option');
+            emptyOption.value = '';
+            emptyOption.textContent = 'Select Month';
+            selectElement.appendChild(emptyOption);
+
+            for (let i = 1; i <= 12; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                selectElement.appendChild(option);
+            }
+        }
+
+        function populateDays(selectElementId) {
+            const selectElement = document.getElementById(selectElementId);
+            selectElement.innerHTML = '';
+
+            const emptyOption = document.createElement('option');
+            emptyOption.value = '';
+            emptyOption.textContent = 'Select Day';
+            selectElement.appendChild(emptyOption);
+
+            for (let day = 1; day <= 31; day++) {
+                const option = document.createElement('option');
+                option.value = day.toString();
+                option.textContent = day;
+                selectElement.appendChild(option);
+            }
+        }
+
+        function parseReportString(reportText) {
+            const lines = reportText.split('\n').map(line => line.trim()).filter(Boolean);
+            const items = [];
+
+            for (const line of lines) {
+                let item = {};
+
+                if (line.startsWith("periodic_event")) {
+                    const match = line.match(/^periodic_event\s+["“](.+?)["”] on (\d{4}\/\d{2}\/\d{2}) from (\d+) for (\d+) hours(?:\s+Weekly:\s*["“](.+?)["”])?/);
+                    if (match) {
+                        item.type = "periodic_event";
+                        item.title = match[1];
+                        item.date = match[2];
+                        item.startHour = match[3];
+                        item.duration = match[4];
+                        if (match[5]) {
+                            item.description = match[5];
+                        }
+                    }
+                } else if (line.startsWith("task")) {
+                    const match = line.match(/^task\s+["“](.+?)["”] on (\d{4}\/\d{2}\/\d{2}) at (\d+):\s*"?([\s\S]*)"?$/);
+                    if (match) {
+                        item.type = "task";
+                        item.title = match[1];
+                        item.date = match[2];
+                        item.time = match[3];
+                        item.description = match[4];
+                    }
+                } else if (line.startsWith("event")) {
+                    const match = line.match(/^event\s+["“](.+?)["”] on (\d{4}\/\d{2}\/\d{2}) from (\d+) for (\d+) hours:?\s*["“]?([\s\S]*?)["”]?$/);
+                    if (match) {
+                        item.type = "event";
+                        item.title = match[1];
+                        item.date = match[2];
+                        item.startHour = match[3];
+                        item.duration = match[4];
+                        item.description = match[5];
+                    }
+                } else if (line.startsWith("join_event")) {
+                    const match = line.match(/^join_event\s+["“](.+?)["”] on (\d{4}\/\d{2}\/\d{2}) from (\d+) to (\d+)\s+hosted by\s+["“](.+?)["”]\s*:?\s*["“]?([\s\S]*?)["”]?$/);
+                    if (match) {
+                        item.type = "join_event";
+                        item.title = match[1];
+                        item.date = match[2];
+                        item.startHour = match[3];
+                        item.endHour = match[4];
+                        item.host = match[5];
+                        item.description = match[6];
+                    }
+                }
+
+
+                if (Object.keys(item).length > 0) {
+                    items.push(item);
+                }
+            }
+
+            return items;
+        }
+
+
+        async function generateReport() {
+            const startYear = startYearSelect.value;
+            const startMonth = startMonthSelect.value;
+            const startDay = startDaySelect.value;
+            const endYear = endYearSelect.value;
+            const endMonth = endMonthSelect.value;
+            const endDay = endDaySelect.value;
+
+            if (!startYear || !startMonth || !startDay || !endYear || !endMonth || !endDay) {
+                showMessage("Please select complete start and end dates.", "error");
+                noItemsMessage.style.display = 'block';
+                return;
+            }
+
+            const params = new URLSearchParams({
+                startYear,
+                startMonth,
+                startDay,
+                endYear,
+                endMonth,
+                endDay
+            });
+
+            const apiUrl = `/api/report?${params.toString()}`;
+
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Server responded with ${response.status}: ${errorText}`);
+                }
+
+                const reportText = await response.text();
+                const reportItems = parseReportString(reportText);
+                renderReports(reportItems);
+
+            } catch (error) {
+                console.error('Error in generateReport:', error);
+                showMessage("Failed to fetch reports. Please try again.", "error");
+                noItemsMessage.style.display = 'block';
+            }
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>"']/g, function (m) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                }[m];
+            });
+        }
+
+        function renderReports(items = []) {
+            reportList.innerHTML = '';
+            noItemsMessage.style.display = 'none';
+
+            if (items.length === 0) {
+                noItemsMessage.style.display = 'block';
+                reportList.appendChild(noItemsMessage);
+                showMessage("No reports found for selected dates.", "info");
+                return;
+            }
+
+            items.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.className = 'report-item';
+
+                let title = '', details = '';
+
+                switch (item.type) {
+                    case 'event':
+                        title = `Event: ${item.title}`;
+                        details = `Date: ${item.date} | Start: ${item.startHour}:00 | Duration: ${item.duration} hours`;
+                        break;
+                    case 'task':
+                        title = `Task: ${item.title}`;
+                        details = `Date: ${item.date} | Time: ${item.time}:00`;
+                        break;
+                    case 'join_event':
+                        title = `Join Event: ${item.title}`;
+                        details = `Date: ${item.date} | From: ${item.startHour}:00 to ${item.endHour}:00 | Host: ${item.host}`;
+                        break;
+                    case 'periodic_event':
+                        title = `Periodic Event: ${item.title}`;
+                        details = `Date: ${item.date} | Start: ${item.startHour}:00 | Duration: ${item.duration} hours | Weekly`;
+                        break;
+                }
+
+                const cleanDescription = item.description?.trim().replace(/^"|"$/g, '');
+                const escapedDescription = cleanDescription ? escapeHTML(cleanDescription) : '';
+
+                listItem.innerHTML = `
+            <p class="font-bold text-lg">${title}</p>
+            <p class="text-gray-600 text-sm">${details}</p>
+            ${escapedDescription ? `<p class="text-gray-600 text-sm mt-1">Description: ${escapedDescription}</p>` : ''}
+        `;
+
+                reportList.appendChild(listItem);
+            });
+        }
+
+
+
+
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            console.log('Form submitted');
+            generateReport();
+        }
+
+        function navigateTo(pageUrl, isLogout = false) {
+            if (isLogout) {
+                fetch('/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                }).finally(() => {
+                    localStorage.removeItem('loggedInUser');
+                    window.location.href = pageUrl;
+                });
+            } else {
+                window.location.href = pageUrl;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Page loaded, initializing...');
+
+            populateYears('start-year');
+            populateMonths('start-month');
+            populateDays('start-day');
+            populateYears('end-year');
+            populateMonths('end-month');
+            populateDays('end-day');
+
+            reportFilterForm.addEventListener('submit', handleFormSubmit);
+
+            showMessage("Please select date range and generate report", "info");
+
+            console.log('Initialization complete');
+        });
+    </script>
+</body>
+
+</html>
