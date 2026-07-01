@@ -137,3 +137,51 @@ bool isValidDay(const string& day) {
     int day_num = stoi(day);
     return (day_num >= 1 && day_num <= 30);
 }
+
+string dateToString(int year_, int month_, int day_){
+    string month, day;
+    if (month_ < 10)
+    {
+        month = '0' + to_string(month_);
+    }
+    else
+        month = to_string(month_);
+    if (day_ < 10)
+    {
+        day = '0' + to_string(day_);
+    }
+    else
+        day = to_string(day_);
+    return to_string(year_) + '/' + month + '/' + day;
+}
+
+bool isPositiveInteger(const std::string& str) {
+    std::regex integer_pattern("^\\d+$");
+    return std::regex_match(str, integer_pattern);
+}
+
+string urlencode(const std::string &value) {
+    ostringstream escaped;
+    escaped.fill('0');
+    escaped << std::hex;
+
+    for (char c : value) {
+        if (isalnum(static_cast<unsigned char>(c)) || c == '-' || c == '_' || c == '.' || c == '~') {
+            escaped << c;
+        } else if (c == ' ') {
+            escaped << '+';
+        } else {
+            escaped << '%' << setw(2) << uppercase << int(static_cast<unsigned char>(c));
+        }
+    }
+
+    return escaped.str();
+}
+
+string formatDate(int year, int month, int day) {
+    ostringstream oss;
+    oss << year << '/';
+    oss << setw(2) << setfill('0') << month << '/';
+    oss << setw(2) << setfill('0') << day;
+    return oss.str();
+}

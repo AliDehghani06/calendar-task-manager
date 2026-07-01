@@ -25,5 +25,9 @@ bool validateDate(const string& date);
 bool isValidStartTime(const string& time);
 bool isValidDuration(const string& dur);
 bool isValidDay(const string& day);
+string dateToString(int year_, int month_, int day_);
+bool isPositiveInteger(const std::string& str);
+string urlencode(const std::string &value);
+string formatDate(int year, int month, int day);
 
 #endif
