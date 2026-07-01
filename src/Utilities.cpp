@@ -68,3 +68,28 @@ int dateToDays(const string &date)
            stoi(date_parts[2]);
 }
 
+string nextDay(const string &date)
+{
+    std::vector<std::string> date_parts = Separator(date, '/');
+    int year = std::stoi(date_parts[0]);
+    int month = std::stoi(date_parts[1]);
+    int day = std::stoi(date_parts[2]);
+    day++;
+    if (day > 30)
+    {
+        day = 1;
+        month++;
+        if (month > 12)
+        {
+            month = 1;
+            year++;
+        }
+    }
+    day = std::max(1, std::min(day, 31));
+    month = std::max(1, std::min(month, 12));
+
+    char buffer[11];
+    snprintf(buffer, sizeof(buffer), "%04d/%02d/%02d", year, month, day);
+    return string(buffer);
+}
+

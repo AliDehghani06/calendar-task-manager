@@ -19,4 +19,5 @@ string RemoveQuotation(const string& word);
 string DesiredWord(const vector<string>& words, const string& wanted);
 int findDistance(const string &start_date, const string &end_date);
 int dateToDays(const string &date);
+string nextDay(const string &date);
 #endif
